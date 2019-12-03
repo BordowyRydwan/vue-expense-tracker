@@ -1,0 +1,26 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "App used to track everyday expenses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pawluch/expense-tracker.git"
+  },
+  "keywords": [
+    "expense",
+    "vue"
+  ],
+  "author": "Dawid Wijata",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pawluch/expense-tracker/issues"
+  },
+  "homepage": "https://github.com/Pawluch/expense-tracker#readme",
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
+}
