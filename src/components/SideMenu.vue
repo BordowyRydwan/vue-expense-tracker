@@ -7,26 +7,34 @@
     ">
       <ul>
         <Hamburger @click="showMenu" />
-        <MenuItem 
-          icon_name="income_icon.png" 
-          caption="Przychody"
-          :isDisplayed="isMenuDisplayed"
-        />
-        <MenuItem 
-          icon_name="money_icon.png" 
-          caption="Wydatki"
-          :isDisplayed="isMenuDisplayed"
-        />
-        <MenuItem 
-          icon_name="chart_icon.png" 
-          caption="Podsumowanie"
-          :isDisplayed="isMenuDisplayed"
-        />
-        <MenuItem 
-          icon_name="settings_icon.png" 
-          caption="Ustawienia"
-          :isDisplayed="isMenuDisplayed"
-        />
+        <router-link to="/incomes">
+          <MenuItem 
+            icon_name="income_icon.png" 
+            caption="Przychody"
+            :isDisplayed="isMenuDisplayed"
+          />
+        </router-link>
+        <router-link to="/expenses">
+          <MenuItem 
+            icon_name="money_icon.png" 
+            caption="Wydatki"
+            :isDisplayed="isMenuDisplayed"
+          />
+        </router-link>
+        <router-link to="/">
+          <MenuItem 
+            icon_name="chart_icon.png" 
+            caption="Podsumowanie"
+            :isDisplayed="isMenuDisplayed"
+          />
+        </router-link>
+        <router-link to="/settings">
+          <MenuItem 
+            icon_name="settings_icon.png" 
+            caption="Ustawienia"
+            :isDisplayed="isMenuDisplayed"
+          />
+        </router-link>
       </ul>
     </aside>
   </div>
@@ -50,25 +58,26 @@ export default {
   },
   methods: {
     showMenu: function(){
-      this.displaySwitches += 1
+      this.displaySwitches += 1;
       
       if(this.displaySwitches % 2){
         
         setTimeout(() => {
-          this.isMenuDisplayed = !this.isMenuDisplayed
-        }, 400)
+          this.isMenuDisplayed = !this.isMenuDisplayed;
+        }, 100)
 
       } else{
 
          setTimeout(() => {
-          this.isMenuDisplayed = !this.isMenuDisplayed
+          this.isMenuDisplayed = !this.isMenuDisplayed;
         }, 200)
 
-      }
-
-      
+      } 
     }
   },
+  mounted(){
+    
+  }
 };
 </script>
 
@@ -93,6 +102,7 @@ export default {
   height: 100vh;
 
   border-right: 2px gray solid;
+  background-color: #ffffff;
 
   ul {
     list-style-type: none;
@@ -100,12 +110,54 @@ export default {
 }
 
 .menu__inactive{
-  width: 4vw;
+  width: 50px;
   transition-duration: 2s;
 }
 
 .menu__active{
-  width: 15vw;
+  width: 200px;
   transition-duration: 0.5s;
+}
+
+a:link,
+a:hover,
+a:active,
+a:visited{
+  text-decoration: none;
+  color: #444;
+}
+
+a:hover{
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .menu__active{
+    width: 100vw;
+  }
+
+  .menu__inactive{
+    transition-duration: 1s;
+  }
+}
+
+@media (max-width: 400px){
+  .menu{
+    width: 100vw;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    border-right: 0px;
+
+    ul{
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      width: 100vw;
+      height: 50px;
+      border-bottom: 1px #666 solid;
+      
+    }
+  }
 }
 </style>

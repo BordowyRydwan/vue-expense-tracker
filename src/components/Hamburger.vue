@@ -30,11 +30,11 @@ export default {
   .container{
     display: flex;
     flex-direction: column;
-    padding-left: 1vw;
     height: 10vh;
     min-height: 60px;
     justify-content: center;
     transition-duration: 0.2s;
+    padding-left: 10px;
 
     .bar{
       width: 25px;
@@ -55,6 +55,12 @@ export default {
     }
     :nth-child(3){
       transform: translateY(-2px)rotate(-45deg);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .container{
+      display: none;
     }
   }
 </style>
