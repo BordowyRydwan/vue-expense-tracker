@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <SideMenu />
+    <Menu />
     <router-view />
   </div>
 </template>
 
 <script>
-import SideMenu from './components/SideMenu.vue'
+import Menu from './components/Menu.vue'
 
 export default {
   name: 'app',
+
   components: {
-    SideMenu,
+    Menu,
+  },
+
+  created() {
+    if(!localStorage.getItem('bill')){
+      localStorage.setItem('bill', []);
+    }
   }
 }
 </script>

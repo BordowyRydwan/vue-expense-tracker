@@ -45,7 +45,7 @@ import MenuItem from "./MenuItem";
 import Hamburger from "./Hamburger"
 
 export default {
-  name: "sideMenu",
+  name: "Menu",
   components:{
     MenuItem,
     Hamburger
@@ -74,9 +74,6 @@ export default {
 
       } 
     }
-  },
-  mounted(){
-    
   }
 };
 </script>
@@ -102,7 +99,7 @@ export default {
   height: 100vh;
 
   border-right: 2px gray solid;
-  background-color: #ffffff;
+  background-color: rgb(249, 253, 253);
 
   ul {
     list-style-type: none;

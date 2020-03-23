@@ -2,20 +2,17 @@
   <div class="expenseForm">
     <form action="" @submit.prevent="onSubmit">
       <h1>
-        DODAJ KOSZTY
+        DODAJ WYDATEK
       </h1>
       <div>
-        <label for="expenseSelect">Rodzaj kosztu:</label>
+        <label for="expenseSelect">Rodzaj wydatku:</label>
         <select name="expenseType" id="expenseSelect" v-model="type" required>
           <option value="food">Żywność</option>
-          <option value="cleaning">Środki czystości</option>
+          <option value="travelling">Transport</option>
           <option value="rent">Opłaty mieszkaniowe</option>
-          <option value="finances">Inwestycje</option>
-          <option value="courses">Kursy / szkolenia</option>
-          <option value="books">Książki</option>
-          <option value="fast_food">Słodycze / fast food</option>
-          <option value="home">Wyposażenie domu</option>
-          <option value="taxes">Podatki / ZUS</option>
+          <option value="hobby">Hobby</option>
+          <option value="furniture">Wyposażenie domu</option>
+          <option value="otherExpenses">Inne</option>
         </select>
       </div>
       <div>
@@ -44,10 +41,25 @@
         type: 'rent',
         desc: '',
         amount: 0,
-        id: localStorage.length,
-        errors: []
+        errors: [],
+        bill: []
       }
     },
+
+    computed: {
+      id: function() {return this.bill.length}
+    },
+
+    mounted(){
+      if(localStorage.getItem('bill')){
+        try {
+          this.bill = JSON.parse(localStorage.getItem('bill'));
+        } catch(e) {
+          localStorage.removeItem('bill');
+        }
+      }
+    },
+
     methods: {
       save: function () {
 
@@ -60,7 +72,7 @@
           time: new Date().toLocaleTimeString()
         };
 
-        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
+        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)/;
 
         if(this.desc.length < 1){
           this.errors.push('Brak opisu wydatku');
@@ -71,7 +83,8 @@
         }
 
         if(this.errors.length === 0){
-           localStorage.setItem(this.id, JSON.stringify(exportData));
+          this.bill.push(exportData);
+          localStorage.setItem('bill', JSON.stringify(this.bill))
 
           this.id += 1;
           this.amount = 0;
@@ -107,30 +120,37 @@
     font-weight: bold;
   }
 
+  form{
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 20px;
+
+    div:not(.wrap) > *{
+      width: 300px;
+      display: block; 
+    }
+
+    .wrap > input{
+      max-width: 200px;
+      margin-right: 10px;
+    }
+
+    input{
+      max-width: 300px;
+    }
+  }
+
+
   .expenseForm{
     margin-left : 50px;
     width: calc(100vw - 50px);
     height: 100vh;
 
-    form{
-      width: inherit;
-      height: inherit;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0px 20px;
-
-      div:not(.wrap) > *{
-        display: block;
-        width: 300px;
-      }
-
-      input{
-        max-width: 300px;
-      }
-    }
-
+    
     form > *{
       margin-bottom: 5vh;
     }
@@ -174,6 +194,19 @@
     color: red;
   }
 
+  button{
+    padding: 10px 15px;
+    background: linear-gradient(rgb(228, 227, 227) 0%, rgb(206, 199, 199) 100%);
+    box-shadow: none;
+    border: 1px rgb(199, 198, 198) solid;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px gray;
+  }
+
+  button:hover{
+     background: linear-gradient(rgb(243, 242, 242) 0%, rgb(223, 220, 220) 100%);
+  }
+
   @media (max-width: 400px){
     .expenseForm{
       margin-left: 0px;
@@ -181,6 +214,25 @@
 
       height: calc(100vh - 50px);
       width: 100vw;
+
+      form > h1{
+        font-size: 1.7rem;
+        margin-bottom: 5vh;
+      }
+    }
+
+    form{
+      div:not(.wrap) > *{
+        width: 90vw;
+      }
+
+      .wrap > input{
+        max-width: 70vw;
+      }
+  
+      input{
+        max-width: 90vw;
+      }
     }
   }
 </style>

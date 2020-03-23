@@ -14,9 +14,6 @@
       icon_name: String,
       caption: String,
       isDisplayed: Boolean
-    },
-    methods: {
-      
     }
   };
 </script>

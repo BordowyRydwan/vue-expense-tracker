@@ -10,12 +10,8 @@
         <button @click="clearData">Wyczyść</button>
       </li>
       <li>
-        <p>Przełącz na dark mode</p>
-        <button>Przełącz</button>
-      </li>
-      <li>
         <p>Eksportuj dane do JSON</p>
-        <button>Eksport</button>
+        <button @click="exportToJSON('money_data.json')">Eksport</button>
       </li>
     </ul>
   </div>
@@ -30,6 +26,30 @@ export default {
 
       document.querySelector('.output').textContent = 'Wyczyszczono dane aplikacji';
       document.querySelector('.output').classList.add('correct');
+    },
+    exportToJSON: function (filename) {
+      let text= '[';
+
+      Object.keys(localStorage).slice(0, localStorage.length - 1).forEach((key, index, arr) => {
+        text += localStorage.getItem(key);
+
+        if(key !== arr[arr.length - 1]){
+          text += ',';
+        }  
+      }); 
+
+      text += ']';
+
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
     }
   }
 }
@@ -73,6 +93,10 @@ export default {
         margin-bottom: 20px;
       }
     }
+  }
+
+  button{
+    font-weight: bold;
   }
 
   .correct{

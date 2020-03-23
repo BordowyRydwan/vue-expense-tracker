@@ -8,11 +8,8 @@
         <label for="incomeSelect">Rodzaj przychodu:</label>
         <select name="incomeType" id="incomeSelect" v-model="type" required>
           <option value="salary">Praca</option>
-          <option value="transfer">Przelew</option>
-          <option value="investment">Lokata</option>
-          <option value="stock_exchange">Dochody z giełdy</option>
-          <option value="gift">Darowizna</option>
-          <option value="pocket">Kieszonkowe</option>
+          <option value="contracts">Zlecenia</option>
+          <option value="otherIncomes">Inne</option>
         </select>
       </div>
       <div>
@@ -41,10 +38,25 @@
         type: 'salary',
         desc: '',
         amount: 0,
-        id: localStorage.length,
-        errors: []
+        errors: [],
+        bill: []
       }
     },
+
+    mounted(){
+      if(localStorage.getItem('bill')){
+        try {
+          this.bill = JSON.parse(localStorage.getItem('bill'));
+        } catch(e) {
+          localStorage.removeItem('bill');
+        }
+      }
+    },
+
+    computed: {
+      id: function() {return this.bill.length}
+    },
+
     methods: {
       save: function () {
 
@@ -68,7 +80,8 @@
         }
 
         if(this.errors.length === 0){
-           localStorage.setItem(this.id, JSON.stringify(exportData));
+          this.bill.push(exportData);
+          localStorage.setItem('bill', JSON.stringify(this.bill))
 
           this.id += 1;
           this.amount = 0;
@@ -104,29 +117,35 @@
     font-weight: bold;
   }
 
+  form{
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 20px;
+
+    div:not(.wrap) > *{
+      display: block;
+      width: 300px;
+    }
+
+    .wrap > input{
+      max-width: 200px;
+      margin-right: 10px;
+    }
+  
+
+    input{
+      max-width: 300px;
+    }
+  }
+
   .incomeForm{
     margin-left : 50px;
     width: calc(100vw - 50px);
     height: 100vh;
-
-    form{
-      width: inherit;
-      height: inherit;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0px 20px;
-
-      div:not(.wrap) > *{
-        display: block;
-        width: 300px;
-      }
-
-      input{
-        max-width: 300px;
-      }
-    }
 
     form > *{
       margin-bottom: 5vh;
@@ -134,6 +153,7 @@
 
     form > h1{
       margin-bottom: 8vh;
+      margin-top: 0px;
     }
 
     label{
@@ -171,6 +191,19 @@
     color: red;
   }
 
+   button{
+    padding: 10px 15px;
+    background: linear-gradient(rgb(228, 227, 227) 0%, rgb(206, 199, 199) 100%);
+    box-shadow: none;
+    border: 1px rgb(199, 198, 198) solid;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px gray;
+  }
+
+  button:hover{
+     background: linear-gradient(rgb(243, 242, 242) 0%, rgb(223, 220, 220) 100%);
+  }
+
   @media (max-width: 400px){
     .incomeForm{
       margin-left: 0px;
@@ -178,6 +211,25 @@
 
       height: calc(100vh - 50px);
       width: 100vw;
+
+      form > h1{
+        font-size: 1.7rem;
+        margin-bottom: 5vh;
+      }
+    }
+
+    form{
+      div:not(.wrap) > *{
+        width: 90vw;
+      }
+
+      .wrap > input{
+        max-width: 70vw;
+      }
+  
+      input{
+        max-width: 90vw;
+      }
     }
   }
 </style>

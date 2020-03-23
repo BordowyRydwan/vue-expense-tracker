@@ -14,7 +14,7 @@ export default {
       this.$refs.container.classList.toggle("active");
     },
     handleClick: function() {
-      this.$emit('click')
+      this.$emit('click');
     }
   }
 };

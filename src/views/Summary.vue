@@ -1,38 +1,59 @@
 <template>
   <div class="stats">
     <div class="balance">
-      <h1>STAN KONTA: <span :class="{
-        green: getBalance() >= 0,
-        red: getBalance() < 0
-      }">
-        {{getBalance()}}
-      </span> PLN</h1>
+      <h1>STAN KONTA: </h1>
+      <p>
+        <span :class="{green: getBalance() >= 0,red: getBalance() < 0}">
+          {{getBalance()}}
+        </span>
+        PLN
+      </p>
     </div>
+
     <ul class="last_activities">
-      <h2 v-if="entries.length > 0">Ostatnie transakcje:</h2>
-      <h2 v-else>Nie dokonano żadnych transakcji</h2>
-      <li v-for="entry in entries.sort((a, b) => b.id - a.id).slice(0, 10)" v-bind:key="entry.id">
-        <p>{{entry.desc}}</p>
-        <p>{{entry.amount.toFixed(2)}}</p>
-      </li>
+      <li v-if="entries.length > 0">Ostatnie {{listSize}} transakcji:</li>
+      <li v-else>Nie wykonano żadnych transakcji</li>
+      <li 
+        is="ListItem"
+        v-for="entry in sortedEntries.slice(0, listSize)"
+        :key="entry.id"
+        :itemData="entry"
+      ></li>
     </ul>
   </div>
 </template>
 
 <script>
+import ListItem from '../components/ListItem.vue';
+
 export default {
   name: 'Summary',
+  components: {
+    ListItem
+  },
+
   data(){
     return {
-      entries: []
+      entries: [],
+      listSize: 10
     }
   },
 
-  mounted() {
-    Object.keys(localStorage).forEach(key => {
-      this.entries.push(JSON.parse(localStorage.getItem(key)));
-    }); 
+  computed: {
+    sortedEntries: function(){
+      return this.entries.slice().sort((a, b) => b.id - a.id);
+    }
   },
+
+  mounted(){
+      if(localStorage.getItem('bill')){
+        try {
+          this.entries = JSON.parse(localStorage.getItem('bill'));
+        } catch(e) {
+          localStorage.removeItem('bill');
+        }
+      }
+    },
 
   methods: {
     getBalance: function () {
@@ -73,56 +94,102 @@ export default {
   }
 
   .stats{
-    margin-left : 50px;
-    padding-top: 100px;
+    margin-left: 50px;
+    padding: 50px 50px;
     width: calc(100vw - 50px);
     height: 100vh;
 
     display: flex;
     flex-direction: column;
 
-    align-items: center;
   }
 
   .balance{
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    p{
+      font-size: 1.7rem;
+    }
   }
 
   .last_activities{
     list-style-type: none;
-    width: 300px;
-    margin-top: 50px;
+    max-width: 400px;
+    margin-top: 20px;
 
     h2{
       margin-bottom: 20px;
       font-size: 1rem;
     }
 
-    li{
-      border-bottom: 1px gray solid;
-      display: flex;
-      justify-content: space-between;
-      padding: 4px 10px;
-    } 
-    
+    li:first-child{
+      margin-bottom: 20px;
+      padding-left: 5px;
+      width: calc(90vw);
+      max-width: 400px;
+    }
   }
 
   .red{
     color: red;
+    font-size: 2rem;
+    margin-left: 20px;
   }
 
   .green{
     color: green;
+    font-size: 2rem;
+    margin-left: 20px;
   }
 
   @media (max-width: 400px){
     .stats{
       margin-left: 0px;
-      margin-top: 50px;
+      margin-top: 30px;
 
       height: calc(100vh - 50px);
       width: 100vw;
     }
+    
+    .red{
+      font-size: 2.5rem;
+      margin-left: 0px;
+    }
+
+    .green{
+      font-size: 2.5rem;
+      margin-left: 0px;
+    }
+
+    .last_activities{
+      margin-top: 20px;
+      width: 90vw;
+    }
   }
+
+   @media (max-width: 600px){
+     .stats{
+       align-items: center;
+       padding: 50px 0;
+     }
+
+     .balance{
+      font-size: 0.8rem;
+      font-weight: bold;
+
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      p{
+        margin-top: 10px;
+        font-size: 1.7rem;
+      }
+    }
+   }
 </style>
