@@ -7,12 +7,12 @@
       <div>
         <label for="expenseSelect">Rodzaj wydatku:</label>
         <select name="expenseType" id="expenseSelect" v-model="type" required>
-          <option value="food">Żywność</option>
-          <option value="travelling">Transport</option>
-          <option value="rent">Opłaty mieszkaniowe</option>
-          <option value="hobby">Hobby</option>
-          <option value="furniture">Wyposażenie domu</option>
-          <option value="otherExpenses">Inne</option>
+          <option value="Jedzenie">Żywność</option>
+          <option value="Podroze">Transport</option>
+          <option value="Mieszkanie">Opłaty mieszkaniowe</option>
+          <option value="Hobby">Hobby</option>
+          <option value="Meble">Wyposażenie domu</option>
+          <option value="Inne wydatki">Inne</option>
         </select>
       </div>
       <div>
@@ -38,7 +38,7 @@
     name: 'expenseForm',
     data(){
       return{
-        type: 'rent',
+        type: 'Mieszkanie',
         desc: '',
         amount: 0,
         errors: [],

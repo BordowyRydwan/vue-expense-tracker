@@ -16,7 +16,6 @@
         <button @click="remove()">
           X
         </button>
-
       </div>
     </div>
   </div>
@@ -89,10 +88,15 @@ export default {
       height: 25px;
       margin: 0px 2px;
       text-align: center;
+      transition-duration: 0.3s;
 
       &:nth-child(2){
         transform: rotate(90deg);
         font-size: 1.2rem;
+      }
+
+      &:hover{
+        transform: scale(0.9);
       }
     }
   }

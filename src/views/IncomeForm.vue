@@ -7,9 +7,9 @@
       <div>
         <label for="incomeSelect">Rodzaj przychodu:</label>
         <select name="incomeType" id="incomeSelect" v-model="type" required>
-          <option value="salary">Praca</option>
-          <option value="contracts">Zlecenia</option>
-          <option value="otherIncomes">Inne</option>
+          <option value="Praca">Praca</option>
+          <option value="Zlecenia">Zlecenia</option>
+          <option value="Inne przychody">Inne</option>
         </select>
       </div>
       <div>
@@ -35,7 +35,7 @@
     name: 'incomeForm',
     data(){
       return{
-        type: 'salary',
+        type: 'Praca',
         desc: '',
         amount: 0,
         errors: [],

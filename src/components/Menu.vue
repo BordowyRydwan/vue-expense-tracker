@@ -94,6 +94,7 @@ export default {
   left: 0;
   top: 0;
   color: #444;
+  z-index: 100;
 
   width: 4vw;
   height: 100vh;

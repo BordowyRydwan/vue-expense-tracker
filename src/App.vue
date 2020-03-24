@@ -36,11 +36,7 @@ export default {
   #app{
     display: flex;
     flex-direction: row;
-    background-image: url('../public/bg.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+    width: 100vw;
   }
 
 </style>
