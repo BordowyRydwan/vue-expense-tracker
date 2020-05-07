@@ -15,6 +15,12 @@ export default {
     Menu,
   },
 
+  data(){
+    return{
+      menu_shrink: false
+    }
+  },
+
   created() {
     if(!localStorage.getItem('bill')){
       localStorage.setItem('bill', []);
@@ -37,6 +43,19 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100vw;
+    max-width: 100%;
+  }
+
+  .div__shrink{
+    margin-left: 200px;
+    padding: 50px 0px;
+    padding-left: 50px;
+    width: calc(100vw - 250px);
+    transition-duration: 0.3s;
+  }
+
+  select, button, label{
+    cursor: pointer;
   }
 
 </style>

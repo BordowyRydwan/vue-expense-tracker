@@ -11,7 +11,10 @@ export default {
   name: "Hamburger",
   methods: {
     xToggle: function() {
-      this.$refs.container.classList.toggle("active");
+      this.$refs.container.classList.toggle('active');
+
+      this.$parent.$parent.menu_shrink = !this.$parent.$parent.menu_shrink;
+      document.querySelector('#app > div:nth-child(2)').classList.toggle('div__shrink');
     },
     handleClick: function() {
       this.$emit('click');
@@ -54,7 +57,7 @@ export default {
       display: none;
     }
     :nth-child(3){
-      transform: translateY(-2px)rotate(-45deg);
+      transform: translateY(-2px) rotate(-45deg);
     }
   }
 

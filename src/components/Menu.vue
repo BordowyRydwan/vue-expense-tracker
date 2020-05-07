@@ -10,28 +10,28 @@
         <router-link to="/incomes">
           <MenuItem 
             icon_name="income_icon.png" 
-            caption="Przychody"
+            caption="Incomes"
             :isDisplayed="isMenuDisplayed"
           />
         </router-link>
         <router-link to="/expenses">
           <MenuItem 
             icon_name="money_icon.png" 
-            caption="Wydatki"
+            caption="Expenses"
             :isDisplayed="isMenuDisplayed"
           />
         </router-link>
         <router-link to="/">
           <MenuItem 
             icon_name="chart_icon.png" 
-            caption="Podsumowanie"
+            caption="Summary"
             :isDisplayed="isMenuDisplayed"
           />
         </router-link>
         <router-link to="/settings">
           <MenuItem 
             icon_name="settings_icon.png" 
-            caption="Ustawienia"
+            caption="Settings"
             :isDisplayed="isMenuDisplayed"
           />
         </router-link>
@@ -94,7 +94,7 @@ export default {
   left: 0;
   top: 0;
   color: #444;
-  z-index: 100;
+  z-index: 0;
 
   width: 4vw;
   height: 100vh;

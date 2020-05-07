@@ -1,7 +1,7 @@
 <template>
   <div class="stats">
     <div class="balance">
-      <h1>STAN KONTA: </h1>
+      <h1>Account balance: </h1>
       <p>
         <span :class="{green: getBalance() >= 0,red: getBalance() < 0}">
           {{getBalance()}}
@@ -13,36 +13,38 @@
       <ul class="last_activities">
         <li v-if="entries.length > 0">
           <div class="filter">
-            <p>Filtruj:</p>
+            <p>Filter:</p>
             <p>
-              <label for="days">Ostatnich dni: </label> 
+              <label for="days">Last days: </label> 
               <input type="number" id="days" v-model="daysAmount" min="1">
             </p>
             <p>
-              <label for="days">Ostatnich transakcji: </label> 
+              <label for="days">Last transactions: </label> 
               <input type="number" id="days" v-model="listSize" min="3">
             </p>
             <p>
-              <label for="category">Kategoria:</label> 
+              <label for="category">Category:</label> 
               <select name="category" id="category" v-model="type">
-                <option value="">brak</option>
-                <option value="Praca">Praca</option>
-                <option value="Zlecenia">Zlecenia</option>
-                <option value="Zywnosc">Żywność</option>
-                <option value="Podroze">Transport</option>
-                <option value="Mieszkanie">Opłaty mieszkaniowe</option>
+                <option value="">none</option>
+                <option value="Jobs">Jobs</option>
+                <option value="Contracts">Contracts</option>
+                <option value="Food and drink">Food and drink</option>
+                <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
                 <option value="Hobby">Hobby</option>
-                <option value="Meble">Wyposażenie domu</option>
+                <option value="Household">Household</option>
               </select>
             </p>
             <p>
-              <label for="name">Nazwa: </label> 
+              <label for="name">Name: </label> 
               <input type="text" id="name" v-model="searchedName">
             </p>
           </div>
-          <h2>Transakcje:</h2>
+          <h2>Transactions:</h2>
         </li>
-        <li v-else>Nie wykonano żadnych transakcji</li>
+        <li v-else>No transactions have been made.
+          <br><br>Add your incomes and expenses with <b>the menu on the edge of the screen</b>.
+        </li>
         <li 
           is="ListItem"
           v-for="entry in 
@@ -53,13 +55,13 @@
           :itemData="entry"
         ></li>
       </ul>
-      <div class="charts">
-        <h2>Wydatki z ostatnich {{daysAmount}} dni:</h2>
+      <div class="charts" v-if="entries.length > 0">
+        <h2>Expenses from last {{daysAmount}} days:</h2>
         <expense-chart 
           :chart-data="expenseChartData"
           :styles="chartStyle"
           ></expense-chart>
-        <h2>Przychody z ostatnich {{daysAmount}} dni:</h2>
+        <h2>Incomes from last {{daysAmount}} days:</h2>
         <income-chart 
           :chart-data="incomeChartData"
           :styles="chartStyle"
@@ -123,7 +125,7 @@ export default {
         labels: this.expenseCategories,
         datasets: [
           {
-            label: 'Kategorie',
+            label: 'Categories',
             backgroundColor: '#f87979',
             data: this.expenseByCategories,
           }
@@ -155,7 +157,7 @@ export default {
         labels: this.incomeCategories,
         datasets: [
           {
-            label: 'Kategorie',
+            label: 'Categories',
             backgroundColor: '#10dd21',
             data: this.incomeByCategories,
           }
@@ -179,6 +181,10 @@ export default {
         } catch(e) {
           localStorage.removeItem('bill');
         }
+      }
+
+      if(this.$parent.menu_shrink){
+        document.querySelector('#app > div:nth-child(2)').classList.add('div__shrink');
       }
     },
 
@@ -221,12 +227,20 @@ export default {
 
   .stats{
     margin-left: 50px;
-    padding: 50px 50px;
+    padding: 50px 0px;
     width: calc(100vw - 50px);
     height: 100vh;
 
     display: flex;
     flex-direction: column;
+    transition-duration: 0.8s;
+  }
+
+  .div__shrink{
+    margin-left: 230px;
+    padding: 50px 0px;
+    width: calc(100vw - 250px);
+    transition-duration: 0.3s;
   }
 
   .bills_data{
@@ -330,7 +344,7 @@ export default {
 
     max-width: 400px;
     width: 95%;
-    z-index: 1;
+    z-index: -1;
 
     h2{
       margin-top: 20px;
@@ -380,7 +394,7 @@ export default {
     }
   }
 
-   @media (max-width: 600px){
+   @media (max-width: 700px){
     .stats{
       align-items: center;
       padding: 50px 0;

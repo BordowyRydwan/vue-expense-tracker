@@ -27,7 +27,7 @@
 
 li {
   height: 10vh;
-  min-height: 50px;
+  min-height: 40px;
   padding-left: 10px;
 
   display: flex;

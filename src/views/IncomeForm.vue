@@ -2,22 +2,22 @@
   <div class="incomeForm">
     <form action="" @submit.prevent="onSubmit">
       <h1>
-        DODAJ PRZYCHÓD
+        ADD YOUR INCOME
       </h1>
       <div>
-        <label for="incomeSelect">Rodzaj przychodu:</label>
+        <label for="incomeSelect">Income type:</label>
         <select name="incomeType" id="incomeSelect" v-model="type" required>
-          <option value="Praca">Praca</option>
-          <option value="Zlecenia">Zlecenia</option>
-          <option value="Inne przychody">Inne</option>
+          <option value="Jobs">Jobs</option>
+          <option value="Contracts">Contracts</option>
+          <option value="Other incomes">Other incomes</option>
         </select>
       </div>
       <div>
-        <label for="incomeDescription">Opis: </label>
+        <label for="incomeDescription">Description: </label>
         <input type="text" id="incomeDescription" v-model="desc" @keypress="cleanOutput" required>
       </div>
       <div>
-        <label for="incomeValue">Wartość:</label>
+        <label for="incomeValue">Value:</label>
         <div class="wrap">
         <input type="text" v-model="amount" id="incomeValue" @keypress="cleanOutput" required> PLN
         </div> 
@@ -25,7 +25,7 @@
       <div>
         <p class="output"></p>
       </div>
-      <button type="submit" @click="save" >Potwierdź</button>
+      <button type="submit" @click="save" >Confirm</button>
     </form>
   </div>
 </template>
@@ -35,7 +35,7 @@
     name: 'incomeForm',
     data(){
       return{
-        type: 'Praca',
+        type: 'Jobs',
         desc: '',
         amount: 0,
         errors: [],
@@ -50,6 +50,10 @@
         } catch(e) {
           localStorage.removeItem('bill');
         }
+      }
+
+      if(this.$parent.menu_shrink){
+        document.querySelector('#app > div:nth-child(2)').classList.add('div__shrink');
       }
     },
 
@@ -69,14 +73,18 @@
           time: new Date().toLocaleTimeString()
         };
 
-        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
+        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?((,|\.)\d{0,2})?)$/;
 
         if(this.desc.length < 1){
-          this.errors.push('Brak opisu przychodu');
+          this.errors.push('No description added.');
+        }
+
+        if(this.amount > Math.pow(10, 12)){
+          this.errors.push('You ain\'t got that much, fool');
         }
 
         if(!currencyRegex.test(this.amount.toString()) || this.amount === 0){
-          this.errors.push('Nieodpowiedni format liczby');
+          this.errors.push('Bad number format');
         }
 
         if(this.errors.length === 0){
@@ -90,7 +98,7 @@
           document.querySelector('.output').classList.remove('error');
           document.querySelector('.output').classList.add('correct');
 
-          document.querySelector('.output').innerHTML = 'Dane przesłano poprawnie';
+          document.querySelector('.output').innerHTML = 'Data sent correctly';
         } else{
           document.querySelector('.output').classList.remove('correct');
           document.querySelector('.output').classList.add('error');
@@ -118,7 +126,6 @@
   }
 
   form{
-    width: inherit;
     height: inherit;
     display: flex;
     flex-direction: column;
@@ -146,6 +153,7 @@
     margin-left : 50px;
     width: calc(100vw - 50px);
     height: 100vh;
+    transition-duration: 0.8s;
 
     form > *{
       margin-bottom: 5vh;
@@ -183,6 +191,13 @@
     }
   }
 
+  .div__shrink{
+    margin-left: 230px;
+
+    width: calc(100vw - 250px);
+    transition-duration: 0.3s;
+  }
+
   .correct{
     color: green;
   }
@@ -207,7 +222,7 @@
   @media (max-width: 400px){
     .incomeForm{
       margin-left: 0px;
-      margin-top: 50px;
+      margin-top: 100px;
 
       height: calc(100vh - 50px);
       width: 100vw;
@@ -216,19 +231,23 @@
         font-size: 1.7rem;
         margin-bottom: 5vh;
       }
+
+      button{
+        margin-bottom: 100px;
+      }
     }
 
     form{
       div:not(.wrap) > *{
-        width: 90vw;
+        width: 80vw;
       }
 
       .wrap > input{
-        max-width: 70vw;
+        max-width: 60vw;
       }
   
       input{
-        max-width: 90vw;
+        max-width: 80vw;
       }
     }
   }

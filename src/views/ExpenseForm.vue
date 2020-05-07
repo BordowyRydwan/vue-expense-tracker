@@ -2,25 +2,25 @@
   <div class="expenseForm">
     <form action="" @submit.prevent="onSubmit">
       <h1>
-        DODAJ WYDATEK
+        ADD YOUR EXPENSE
       </h1>
       <div>
-        <label for="expenseSelect">Rodzaj wydatku:</label>
+        <label for="expenseSelect">Expense type:</label>
         <select name="expenseType" id="expenseSelect" v-model="type" required>
-          <option value="Jedzenie">Żywność</option>
-          <option value="Podroze">Transport</option>
-          <option value="Mieszkanie">Opłaty mieszkaniowe</option>
+          <option value="Food and drink">Food and drink</option>
+          <option value="Transport">Transport</option>
+          <option value="Rent">Rent</option>
           <option value="Hobby">Hobby</option>
-          <option value="Meble">Wyposażenie domu</option>
-          <option value="Inne wydatki">Inne</option>
+          <option value="Household">Household</option>
+          <option value="Other expenses">Other expenses</option>
         </select>
       </div>
       <div>
-        <label for="expenseDescription">Opis: </label>
+        <label for="expenseDescription">Description: </label>
         <input type="text" id="expenseDescription" required v-model="desc" @keypress="cleanOutput">
       </div>
       <div>
-        <label for="expenseValue">Wartość:</label>
+        <label for="expenseValue">Value:</label>
         <div class="wrap">
           <input type="text" v-model.number="amount" id="incomeValue" required @keypress="cleanOutput"> PLN
         </div> 
@@ -28,7 +28,7 @@
       <div>
         <p class="output"></p>
       </div>
-      <button type="submit" @click="save">Potwierdź</button>
+      <button type="submit" @click="save">Confirm</button>
     </form>
   </div>
 </template>
@@ -38,7 +38,7 @@
     name: 'expenseForm',
     data(){
       return{
-        type: 'Mieszkanie',
+        type: 'Rent',
         desc: '',
         amount: 0,
         errors: [],
@@ -58,6 +58,10 @@
           localStorage.removeItem('bill');
         }
       }
+
+      if(this.$parent.menu_shrink){
+        document.querySelector('#app > div:nth-child(2)').classList.add('div__shrink');
+      }
     },
 
     methods: {
@@ -72,14 +76,18 @@
           time: new Date().toLocaleTimeString()
         };
 
-        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)/;
+        const currencyRegex = /^[0-9]\d*(((,\d{3}){1})?((,|\.)\d{0,2})?)/;
 
         if(this.desc.length < 1){
-          this.errors.push('Brak opisu wydatku');
+          this.errors.push('No description added');
         }
 
         if(!currencyRegex.test(this.amount.toString()) || this.amount === 0){
-          this.errors.push('Nieodpowiedni format liczby');
+          this.errors.push('Bad number format');
+        }
+
+        if(this.amount > Math.pow(10, 12)){
+          this.errors.push('You ain\'t spent that much, fool');
         }
 
         if(this.errors.length === 0){
@@ -93,7 +101,7 @@
           document.querySelector('.output').classList.remove('error');
           document.querySelector('.output').classList.add('correct');
 
-          document.querySelector('.output').innerHTML = 'Dane przesłano poprawnie';
+          document.querySelector('.output').innerHTML = 'Data sent correctly';
         } else{
           document.querySelector('.output').classList.remove('correct');
           document.querySelector('.output').classList.add('error');
@@ -121,7 +129,6 @@
   }
 
   form{
-    width: inherit;
     height: inherit;
     display: flex;
     flex-direction: column;
@@ -144,12 +151,11 @@
     }
   }
 
-
   .expenseForm{
     margin-left : 50px;
     width: calc(100vw - 50px);
     height: 100vh;
-
+    transition-duration: 0.8s;
     
     form > *{
       margin-bottom: 5vh;
@@ -186,6 +192,13 @@
     }
   }
 
+  .div__shrink{
+    margin-left: 230px;
+
+    width: calc(100vw - 250px);
+    transition-duration: 0.3s;
+  }
+
   .correct{
     color: green;
   }
@@ -201,16 +214,17 @@
     border: 1px rgb(199, 198, 198) solid;
     border-radius: 3px;
     box-shadow: 0px 1px 1px gray;
+    margin-bottom: 50px;
   }
 
   button:hover{
-     background: linear-gradient(rgb(243, 242, 242) 0%, rgb(223, 220, 220) 100%);
+    background: linear-gradient(rgb(243, 242, 242) 0%, rgb(223, 220, 220) 100%);
   }
 
   @media (max-width: 400px){
     .expenseForm{
       margin-left: 0px;
-      margin-top: 50px;
+      margin-top: 90px;
 
       height: calc(100vh - 50px);
       width: 100vw;
@@ -219,19 +233,23 @@
         font-size: 1.7rem;
         margin-bottom: 5vh;
       }
+
+      button{
+        margin-bottom: 100px;
+      }
     }
 
     form{
       div:not(.wrap) > *{
-        width: 90vw;
+        width: 80vw;
       }
 
       .wrap > input{
-        max-width: 70vw;
+        max-width: 60vw;
       }
   
       input{
-        max-width: 90vw;
+        max-width: 80vw;
       }
     }
   }
