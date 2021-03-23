@@ -21,7 +21,7 @@ Welcome to my simple expense tracker app built with Vue.js.
 
 ## Design overview
 
-![Summary display](overview.png) 
+![Summary display](https://github.com/BordowyRydwan/expense-tracker/blob/38cf49c93a47d1abde09091445f17572b1152497/overview.png) 
 
 ## Link
 https://bordowyrydwan.github.io/expense-tracker
